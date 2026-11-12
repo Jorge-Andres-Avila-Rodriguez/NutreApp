@@ -3,12 +3,16 @@ package com.example.NutreApp.models;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 
 @Entity 
@@ -20,17 +24,27 @@ public class Visualizacion {
     private UUID id;
 
     @Column(name = "fecha_visualizacion", nullable = false, unique = false) 
-    private LocalDate fecha_visualizacion;
+    private LocalDate fechaVisualizacion;
 
     @Column(name = "completado", nullable = false, unique = false)
     private Boolean completado;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    @JsonBackReference(value = "usuario-visualizacion")
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "video_id")
+    @JsonBackReference(value = "video-visualizacion")
+    private Video video;
+
     public Visualizacion() {
     }
 
-    public Visualizacion(UUID id, LocalDate fecha_visualizacion, Boolean completado) {
+    public Visualizacion(UUID id, LocalDate fechaVisualizacion, Boolean completado) {
         this.id = id;
-        this.fecha_visualizacion = fecha_visualizacion;
+        this.fechaVisualizacion = fechaVisualizacion;
         this.completado = completado;
     }
 
@@ -43,11 +57,11 @@ public class Visualizacion {
     }
 
     public LocalDate getFecha_visualizacion() {
-        return fecha_visualizacion;
+        return fechaVisualizacion;
     }
 
     public void setFecha_visualizacion(LocalDate fecha_visualizacion) {
-        this.fecha_visualizacion = fecha_visualizacion;
+        this.fechaVisualizacion = fecha_visualizacion;
     }
 
     public Boolean getCompletado() {
@@ -58,8 +72,20 @@ public class Visualizacion {
         this.completado = completado;
     }
 
-    
+    public Usuario getUsuario() {
+        return usuario;
+    }
 
-    
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Video getVideo() {
+        return video;
+    }
+
+    public void setVideo(Video video) {
+        this.video = video;
+    }
 
 }

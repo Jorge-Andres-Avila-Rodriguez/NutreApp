@@ -1,12 +1,30 @@
 package com.example.NutreApp.models;
 
+import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "videos")
 public class Video {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String titulo;
     private String descripcion;
     private String url;
+
+    @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
     public enum Categoria {
@@ -14,6 +32,10 @@ public class Video {
         TALENTO,
         CAPACITACION_INTERNA
     }
+
+    @OneToMany(mappedBy = "video")
+    @JsonManagedReference(value = "video-visualizacion")
+    private List<Visualizacion> visualizaciones;
 
     public Video() {
     }
@@ -65,6 +87,12 @@ public class Video {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-    
-    
+
+    public List<Visualizacion> getVisualizaciones() {
+        return visualizaciones;
+    }
+
+    public void setVisualizaciones(List<Visualizacion> visualizaciones) {
+        this.visualizaciones = visualizaciones;
+    }
 }
